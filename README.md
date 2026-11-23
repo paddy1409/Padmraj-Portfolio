@@ -36,6 +36,12 @@ The frontend's `frontend/.env.example` sets `REACT_APP_BACKEND_URL=http://localh
 
 For persistent contact messages, start MongoDB and configure `MONGO_URL` and `DB_NAME` in `backend/.env`. Without MongoDB, the contact API uses an in-memory fallback for local testing.
 
+## Deploy the frontend to Cloudflare Workers
+
+The root `wrangler.jsonc` configures Wrangler to install frontend dependencies, build the React app, and deploy `frontend/build` as an assets-only Worker. In Cloudflare, use the repository root and deploy command `npx wrangler deploy`; Wrangler runs the configured build command before deployment.
+
+Set `REACT_APP_BACKEND_URL` in the Cloudflare Worker build environment to the public HTTPS origin of the separately hosted FastAPI backend (for example, `https://api.example.com`, without `/api`). Set the backend's `CORS_ORIGINS` to the deployed portfolio origin. Do not use the local `.env.example` values in production.
+
 ## Contact API
 
 - `GET /api/` — API health response
